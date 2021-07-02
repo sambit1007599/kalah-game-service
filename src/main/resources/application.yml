@@ -1,0 +1,56 @@
+spring:
+  application:
+    name: '@project.artifactId@'
+  datasource:
+    url: jdbc:h2:mem:bol-kalah
+    username: admin
+    password: admin
+    driver-class-name: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    properties:
+      hibernate:
+        show_sql: true
+        use_sql_comments: true
+        format_sql: true
+  h2:
+    console:
+      enabled: true
+      path: /console
+      settings:
+        trace: false
+        web-allow-others: false
+
+
+server:
+  port: 7075
+
+#swagger
+swagger.api:
+  title: 'KALAH GAME SERVICE'
+  description: 'This service enable you to play Kalah game'
+  version: 1
+  apiType: private
+  defaultResponseMessage: false
+  basePackage: com.bol.kalah
+  contact:
+    email: sambit1007599@gmail.com
+    teamName: Sambit Samal
+
+constants:
+  error:
+    invalidGameIdException:
+      code: INVALID_GAME_ID
+      message: 'Provided game id is not valid.'
+    emptyPitException:
+      code: EMPTY_PIT
+      message: 'Selected pit is empty. Please select a pit which is not empty.'
+    invalidPitIndexException:
+      code: INVALID_PIT_INDEX
+      message: 'Please select a pit between Player1(1-6) or Player2(8-13). 7 and 14 are big pits.'
+    wrongGameStatusException:
+      code: WRONG_GAME_STATUS
+      message: 'It is '
+    gameOverException:
+      code: GAME_OVER
+      message: 'Game Finished. To play again please create a new Game ID.'
