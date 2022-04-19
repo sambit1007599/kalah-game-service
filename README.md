@@ -1,6 +1,6 @@
 # Kalah Game Service
 
-![img.png](img.png)
+![img.png](images/overview.png)
 
 ## Description:
 
@@ -33,7 +33,7 @@ and puts them in his big pit. The winner of the game is the player who has the m
 
 ## Pre-requisite
 
-- Java 11
+- Java 17
 - Maven
 - Git bash (Or any IDE from where you can connect to git)
 
@@ -52,7 +52,7 @@ Now application is up and running
 
 - Open the URL in your browser : http://localhost:7075/swagger-ui/index.html
 - You will see a swagger page with all the defined specs of the service. There will be 1 POST method you can see.
-- ![img_2.png](img_2.png)
+- ![img_2.png](images/controllers.png)
 
 ### 1. POST : /games
 
@@ -73,7 +73,7 @@ Now application is up and running
 
 ### Actual Game For Reference
 
-![img_1.png](img_1.png)
+![img_1.png](images/board_setup.png)
 
 ### As Per this Service:
 
