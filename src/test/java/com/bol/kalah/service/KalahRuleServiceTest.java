@@ -26,7 +26,6 @@ import com.bol.kalah.error.exception.InvalidPitIndexException;
 import com.bol.kalah.model.Game;
 import com.bol.kalah.model.Pit;
 import com.bol.kalah.repository.PitRepository;
-import com.bol.kalah.service.impl.KalahRuleServiceImpl;
 
 @ExtendWith(SpringExtension.class)
 public class KalahRuleServiceTest {
@@ -34,11 +33,11 @@ public class KalahRuleServiceTest {
   @Mock
   private PitRepository pitRepo;
 
-  private KalahRuleServiceImpl kalahRuleService;
+  private KalahRuleService kalahRuleService;
 
   @BeforeEach
   private void setUp() {
-    kalahRuleService = new KalahRuleServiceImpl(pitRepo);
+    kalahRuleService = new KalahRuleService(pitRepo);
   }
 
   @Test
