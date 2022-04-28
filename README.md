@@ -33,7 +33,7 @@ and puts them in his big pit. The winner of the game is the player who has the m
 
 ## Pre-requisite
 
-- Java 17
+- Java 11
 - Maven
 - Git bash (Or any IDE from where you can connect to git)
 
@@ -50,7 +50,7 @@ Now application is up and running
 
 ## How to play this game
 
-- Open the URL in your browser : http://localhost:7075/swagger-ui/index.html
+- Open the URL in your browser : http://localhost:8085/swagger-ui/index.html
 - You will see a swagger page with all the defined specs of the service. There will be 1 POST method you can see.
 - ![img_2.png](images/controllers.png)
 
@@ -62,13 +62,13 @@ Now application is up and running
 - Click on POST -> Try it out -> Execute
 - You have to use this game ID to play the game.
 
-### 2. PUT : /games/{gameId}/pits/{pitIndex}
+### 2. PUT : /games/{game-id}/pits/{pit-index}
 
 #### Description:
 
 - This endpoint will allow both the players to play the game. Here you have to give the gameID you created in the
   previous endpoint. And you have to select the PitIndex where you want to pick the stones and play.
-- Click on PUT -> Try it out -> provide {gameId} & {pitIndex} -> Execute
+- Click on PUT -> Try it out -> provide {game-id} & {pit-index} -> Execute
 - You will get the response with the current status of pit with number of stones.
 
 ### Actual Game For Reference

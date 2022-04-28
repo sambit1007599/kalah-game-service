@@ -23,7 +23,7 @@ spring:
 
 
 server:
-  port: 7075
+  port: 8085
 
 #swagger
 swagger.api:

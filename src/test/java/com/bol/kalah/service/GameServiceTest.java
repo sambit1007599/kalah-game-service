@@ -1,11 +1,12 @@
 package com.bol.kalah.service;
 
-import com.bol.kalah.common.KalahCommonUtil;
+import com.bol.kalah.dao.GameDao;
+import com.bol.kalah.dao.PitDao;
 import com.bol.kalah.dto.GameStatus;
 import com.bol.kalah.dto.MakeAMoveReply;
 import com.bol.kalah.model.Game;
 import com.bol.kalah.model.Pit;
-import com.bol.kalah.repository.GameRepository;
+import com.bol.kalah.util.KalahCommonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,36 +32,41 @@ import static org.mockito.Mockito.when;
 public class GameServiceTest {
 
     @Mock
-    private GameRepository gameRepo;
+    private GameDao gameDao;
+
+    @Mock
+    private PitDao pitDao;
 
     @Mock
     private KalahRuleService kalahRuleService;
+
+    @Mock
+    private GameValidationService gameValidationService;
 
     private GameService gameService;
 
     @BeforeEach
     public void setup() {
-        gameService = new GameService(gameRepo, kalahRuleService);
+        gameService = new GameService(gameDao, kalahRuleService, gameValidationService);
     }
 
     @Test
     public void testEmptyPitOnLastStone() {
-        when(gameRepo.findById(1L)).thenReturn(getGame());
+        when(gameDao.retrieveGame(1L)).thenReturn(getGame());
 
-        when(kalahRuleService.getPlayerTurn(anyInt())).thenReturn(GameStatus.PLAYER1_TURN);
-        when(kalahRuleService.getPitByPitIndexAndGameId(anyLong(), anyInt())).thenReturn(getPit());
+        when(pitDao.retrievePitDetails(anyLong(), anyInt())).thenReturn(getPit());
         when(kalahRuleService.moveTheStonesInBoard(any(), anyInt(), anyInt(), anyInt(), anyInt(), anyInt()))
                 .thenReturn(getMapOfPits());
 
         when(kalahRuleService.checkAndUpdateIfLastPitIsEmpty(any(), anyInt(), any(GameStatus.class)))
                 .thenReturn(getResultMapOfPits());
 
-        Game game = getGame().get();
+        Game game = getGame();
         game.setPits(getPitListAfterLastPitIsEmpty());
 
-        when(gameRepo.save(any(Game.class))).thenReturn(game);
+        when(gameDao.saveGame(any(Game.class))).thenReturn(game);
 
-        when(kalahRuleService.checkGameEnded(any(Game.class))).thenReturn(game);
+        when(kalahRuleService.checkAndUpdateIfGameIsEnd(any(Game.class))).thenReturn(game);
 
         MakeAMoveReply reply = gameService.makeAMoveByPlayer(1L, 2, "");
 
@@ -68,12 +74,12 @@ public class GameServiceTest {
 
     }
 
-    private java.util.Optional<Game> getGame() {
+    private Game getGame() {
 
         Game game = new Game(getPitList().stream().toArray(Pit[]::new));
         game.setGameStatus(GameStatus.PLAYER1_TURN);
 
-        return Optional.of(game);
+        return game;
     }
 
     private List<Pit> getPitList() {
