@@ -78,7 +78,7 @@ public class KalahRuleServiceTest {
     @Test
     public void testMoveStonesInBoard() {
 
-        Map<Integer, Pit> map = kalahRuleService.moveTheStonesInBoard(getPitList(), 14, 10, 4, 0, 6);
+        Map<Integer, Pit> map = kalahRuleService.moveTheStonesInBoard(getPitList(), 14, 10, 4, 6);
         assertTrue(map.get(4).getNumberOfStones() == 0);
         assertTrue(map.get(10).getNumberOfStones() == 7);
 

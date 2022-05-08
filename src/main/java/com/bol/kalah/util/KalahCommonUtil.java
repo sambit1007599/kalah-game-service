@@ -29,18 +29,18 @@ public class KalahCommonUtil {
     /**
      * Gets last stone pit.
      *
-     * @param initialStones the initial stones
-     * @param pitIndex      the pit index
+     * @param initialStones     the initial stones
+     * @param playerSelectedPit the pit index
      * @return the last stone pit
      */
-    public static int getLastStonePit(int initialStones, int pitIndex) {
+    public static int getLastStonePit(int initialStones, int playerSelectedPit) {
 
         if (initialStones >= (KalahCommonUtil.PIT_END_INDEX - 1)) {
             int lastStonePit = initialStones % (KalahCommonUtil.PIT_END_INDEX - 1);
-            return lastStonePit == 0 ? pitIndex : lastStonePit + pitIndex;
+            return lastStonePit == 0 ? playerSelectedPit : lastStonePit + playerSelectedPit;
 
         } else {
-            int lastStonePit = initialStones + pitIndex;
+            int lastStonePit = initialStones + playerSelectedPit;
             return lastStonePit > KalahCommonUtil.PIT_END_INDEX ?
                     Math.abs(lastStonePit - KalahCommonUtil.PIT_END_INDEX) :
                     lastStonePit;
@@ -53,7 +53,7 @@ public class KalahCommonUtil {
      * @param gameStatus the game status
      * @return the player pit to not put stone
      */
-    public static int getPlayerPitToNotPutStone(GameStatus gameStatus) {
+    public static int getOppositePlayerHousePit(GameStatus gameStatus) {
         return gameStatus == GameStatus.PLAYER1_TURN
                 ? KalahCommonUtil.PLAYER2_HOUSE
                 : KalahCommonUtil.PLAYER1_HOUSE;

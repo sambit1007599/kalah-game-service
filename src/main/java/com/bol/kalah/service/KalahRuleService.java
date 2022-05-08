@@ -19,6 +19,7 @@ import static com.bol.kalah.util.KalahCommonUtil.PLAYER1_HOUSE;
 import static com.bol.kalah.util.KalahCommonUtil.PLAYER2_HOUSE;
 import static com.bol.kalah.util.KalahCommonUtil.PLAYER_1_PITS;
 import static com.bol.kalah.util.KalahCommonUtil.PLAYER_2_PITS;
+import static com.bol.kalah.util.KalahCommonUtil.getNumberOfStonesToPutInEachPit;
 import static com.bol.kalah.util.KalahCommonUtil.getOppositePit;
 import static com.bol.kalah.util.KalahCommonUtil.getSumOfStonesOfPlayerPits;
 
@@ -69,39 +70,31 @@ public class KalahRuleService {
     /**
      * Move the stones in board.
      *
-     * @param pits                         the pits
-     * @param playerPitToNotPutStone       the player pit to not put stone
-     * @param lastStonePit                 the last stone pit
-     * @param pitIndex                     the pit index
-     * @param numberOfStonesToPutInEachPit the number of stones to put in each pit
-     * @param initialStones                the initial stones
+     * @param pits                   the pits
+     * @param playerPitToNotPutStone the player pit to not put stone
+     * @param lastStonePit           the last stone pit
+     * @param playerSelectedPit      the pit index
+     * @param initialStones          the initial stones
      * @return the map
      */
     public Map<Integer, Pit> moveTheStonesInBoard(List<Pit> pits, int playerPitToNotPutStone, int lastStonePit,
-                                                  int pitIndex, int numberOfStonesToPutInEachPit, int initialStones) {
+                                                  int playerSelectedPit, int initialStones) {
 
+        int numberOfStonesToPutInEachPit = getNumberOfStonesToPutInEachPit(initialStones);
         Map<Integer, Pit> stonesInBoard = new HashMap<>();
 
         for (Pit pit : pits) {
-
             int currentIndex = pit.getPitIndex();
-            int currentNumberOfStones = pit.getNumberOfStones();
-
             if (currentIndex != playerPitToNotPutStone) {
-                if (currentIndex > pitIndex && currentIndex <= lastStonePit) {
-                    pit.setNumberOfStones(currentNumberOfStones + 1);
-                } else if (lastStonePit < pitIndex && (currentIndex > pitIndex || currentIndex <= lastStonePit)) {
-                    pit.setNumberOfStones(currentNumberOfStones + 1);
-                } else if (lastStonePit == pitIndex) {
-                    pit.setNumberOfStones(currentNumberOfStones + 1);
+                if (isPitAllowedToPutStone(lastStonePit, playerSelectedPit, currentIndex)) {
+                    pit.setNumberOfStones(pit.getNumberOfStones() + 1);
                 }
                 pit.setNumberOfStones(pit.getNumberOfStones() + numberOfStonesToPutInEachPit);
             }
-
             stonesInBoard.put(currentIndex, pit);
         }
 
-        Pit stonesPickedFromPit = stonesInBoard.get(pitIndex);
+        Pit stonesPickedFromPit = stonesInBoard.get(playerSelectedPit);
         stonesPickedFromPit.setNumberOfStones(stonesPickedFromPit.getNumberOfStones() - initialStones);
         stonesInBoard.put(stonesPickedFromPit.getPitIndex(), stonesPickedFromPit);
 
@@ -133,4 +126,11 @@ public class KalahRuleService {
         game.setGameStatus(FINISHED);
         pitDao.savePit(pit);
     }
+
+    private boolean isPitAllowedToPutStone(int lastStonePit, int playerSelectedPit, int currentIndex) {
+        return currentIndex > playerSelectedPit && currentIndex <= lastStonePit
+                || lastStonePit < playerSelectedPit && (currentIndex > playerSelectedPit || currentIndex <= lastStonePit)
+                || lastStonePit == playerSelectedPit;
+    }
+
 }

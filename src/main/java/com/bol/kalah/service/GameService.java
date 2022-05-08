@@ -28,8 +28,7 @@ import static com.bol.kalah.util.KalahCommonUtil.PIT_START_INDEX;
 import static com.bol.kalah.util.KalahCommonUtil.PLAYER1_HOUSE;
 import static com.bol.kalah.util.KalahCommonUtil.PLAYER2_HOUSE;
 import static com.bol.kalah.util.KalahCommonUtil.getLastStonePit;
-import static com.bol.kalah.util.KalahCommonUtil.getNumberOfStonesToPutInEachPit;
-import static com.bol.kalah.util.KalahCommonUtil.getPlayerPitToNotPutStone;
+import static com.bol.kalah.util.KalahCommonUtil.getOppositePlayerHousePit;
 import static com.bol.kalah.util.KalahCommonUtil.getPlayerTurn;
 
 /**
@@ -74,28 +73,26 @@ public class GameService {
     /**
      * move the stones in board as per the player move
      *
-     * @param gameId   the game id
-     * @param pitIndex the pit index
-     * @param url      the url
+     * @param gameId            the game id
+     * @param playerSelectedPit the pit index
+     * @param url               the url
      * @return the MakeAMoveReply including current pit status
      */
     @Transactional
-    public MakeAMoveReply makeAMoveByPlayer(Long gameId, Integer pitIndex, String url) {
+    public MakeAMoveReply makeAMoveByPlayer(Long gameId, Integer playerSelectedPit, String url) {
 
         Game game = gameDao.retrieveGame(gameId);
         GameStatus gameStatus = game.getGameStatus();
         if (gameStatus == GameStatus.INIT) {
-            gameStatus = getPlayerTurn(pitIndex);
+            gameStatus = getPlayerTurn(playerSelectedPit);
         }
 
-        int initialStones = gameValidationService.validateGameInputs(pitIndex, gameStatus, gameId);
-        int playerPitToNotPutStone = getPlayerPitToNotPutStone(gameStatus);
-        int lastStonePit = getLastStonePit(initialStones, pitIndex);
-        int numberOfStonesToPutInEachPit = getNumberOfStonesToPutInEachPit(initialStones);
+        int initialStones = gameValidationService.validateGameInputs(playerSelectedPit, gameStatus, gameId);
+        int oppositePlayerHousePit = getOppositePlayerHousePit(gameStatus);
+        int lastStonePit = getLastStonePit(initialStones, playerSelectedPit);
 
         Map<Integer, Pit> stonesInBoard = kalahRuleService.moveTheStonesInBoard(
-                game.getPits(), playerPitToNotPutStone, lastStonePit,
-                pitIndex, numberOfStonesToPutInEachPit, initialStones);
+                game.getPits(), oppositePlayerHousePit, lastStonePit, playerSelectedPit, initialStones);
 
         stonesInBoard = kalahRuleService.checkAndUpdateIfLastPitIsEmpty(stonesInBoard, lastStonePit, gameStatus);
 

@@ -43,19 +43,19 @@ public class KalahController {
     /**
      * Play game response entity.
      *
-     * @param gameId   the game id
-     * @param pitIndex the pit index
-     * @param request  the request
+     * @param gameId            the game id
+     * @param playerSelectedPit the pit index
+     * @param request           the request
      * @return the response entity
      */
     @PutMapping("/{game-id}/pits/{pit-index}")
     public ResponseEntity<MakeAMoveReply> playGame(
             @NotNull @PathVariable("game-id") Long gameId,
-            @NotNull @PathVariable("pit-index") Integer pitIndex,
+            @NotNull @PathVariable("pit-index") Integer playerSelectedPit,
             HttpServletRequest request) {
 
         return new ResponseEntity<>(gameService
-                .makeAMoveByPlayer(gameId, pitIndex, request.getRequestURL().toString()
+                .makeAMoveByPlayer(gameId, playerSelectedPit, request.getRequestURL().toString()
                         .replace(request.getRequestURI(), "")), HttpStatus.OK);
 
     }

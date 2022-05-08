@@ -79,8 +79,8 @@ Now application is up and running
 
 Each block is a pit, and containing 6 stones each.
 
-- Player 1 : pits(1,2,3,4,5,6) **_Big Pit_**: 7
-- Player 2 : pits(8,9,10,11,12,13) **_Big Pit_**: 14
+- Player 1 : pits(1,2,3,4,5,6) **_HOUSE PIT_**: 7
+- Player 2 : pits(8,9,10,11,12,13) **_HOUSE PIT_**: 14
 
 - As per game rule and player turn you have to select the pit number.
 - If you select wrong pit or wrong player turn you will get customized error message.

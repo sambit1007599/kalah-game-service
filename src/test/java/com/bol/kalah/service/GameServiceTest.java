@@ -55,7 +55,7 @@ public class GameServiceTest {
         when(gameDao.retrieveGame(1L)).thenReturn(getGame());
 
         when(pitDao.retrievePitDetails(anyLong(), anyInt())).thenReturn(getPit());
-        when(kalahRuleService.moveTheStonesInBoard(any(), anyInt(), anyInt(), anyInt(), anyInt(), anyInt()))
+        when(kalahRuleService.moveTheStonesInBoard(any(), anyInt(), anyInt(), anyInt(), anyInt()))
                 .thenReturn(getMapOfPits());
 
         when(kalahRuleService.checkAndUpdateIfLastPitIsEmpty(any(), anyInt(), any(GameStatus.class)))
